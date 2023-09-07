@@ -1,9 +1,9 @@
 /**
  * Build styles
  */
-import './index.css';
+import "./index.css";
 
-import { IconListBulleted, IconListNumbered } from '@codexteam/icons'
+import { IconListBulleted, IconListNumbered } from "@codexteam/icons";
 
 /**
  * @typedef {object} ListData
@@ -50,7 +50,7 @@ export default class List {
   static get toolbox() {
     return {
       icon: IconListBulleted,
-      title: 'List',
+      title: "List",
     };
   }
 
@@ -78,16 +78,16 @@ export default class List {
 
     this.settings = [
       {
-        name: 'unordered',
-        label: this.api.i18n.t('Unordered'),
-        icon: IconListBulleted,
-        default: config.defaultStyle === 'unordered' || false,
+        name: "ordered",
+        label: this.api.i18n.t("Ordered"),
+        icon: IconListNumbered,
+        default: config.defaultStyle || false,
       },
       {
-        name: 'ordered',
-        label: this.api.i18n.t('Ordered'),
-        icon: IconListNumbered,
-        default: config.defaultStyle === 'ordered' || true,
+        name: "unordered",
+        label: this.api.i18n.t("Unordered"),
+        icon: IconListBulleted,
+        default: config.defaultStyle || true,
       },
     ];
 
@@ -116,28 +116,34 @@ export default class List {
     // fill with data
     if (this._data.items.length) {
       this._data.items.forEach((item) => {
-        this._elements.wrapper.appendChild(this._make('li', this.CSS.item, {
-          innerHTML: item,
-        }));
+        this._elements.wrapper.appendChild(
+          this._make("li", this.CSS.item, {
+            innerHTML: item,
+          })
+        );
       });
     } else {
-      this._elements.wrapper.appendChild(this._make('li', this.CSS.item));
+      this._elements.wrapper.appendChild(this._make("li", this.CSS.item));
     }
 
     if (!this.readOnly) {
       // detect keydown on the last item to escape List
-      this._elements.wrapper.addEventListener('keydown', (event) => {
-        const [ENTER, BACKSPACE] = [13, 8]; // key codes
+      this._elements.wrapper.addEventListener(
+        "keydown",
+        (event) => {
+          const [ENTER, BACKSPACE] = [13, 8]; // key codes
 
-        switch (event.keyCode) {
-          case ENTER:
-            this.getOutofList(event);
-            break;
-          case BACKSPACE:
-            this.backspace(event);
-            break;
-        }
-      }, false);
+          switch (event.keyCode) {
+            case ENTER:
+              this.getOutofList(event);
+              break;
+            case BACKSPACE:
+              this.backspace(event);
+              break;
+          }
+        },
+        false
+      );
     }
 
     return this._elements.wrapper;
@@ -165,7 +171,7 @@ export default class List {
        * @returns {string}
        */
       export: (data) => {
-        return data.items.join('. ');
+        return data.items.join(". ");
       },
       /**
        * To create a list from other block's string, just put it at the first item
@@ -175,8 +181,8 @@ export default class List {
        */
       import: (string) => {
         return {
-          items: [ string ],
-          style: '',
+          items: [string],
+          style: "",
         };
       },
     };
@@ -203,12 +209,12 @@ export default class List {
    * @returns {Array}
    */
   renderSettings() {
-    return this.settings.map(item => ({
+    return this.settings.map((item) => ({
       ...item,
       isActive: this._data.style === item.name,
       closeOnActivate: true,
-      onActivate: () => this.toggleTune(item.name)
-    }))
+      onActivate: () => this.toggleTune(item.name),
+    }));
   }
 
   /**
@@ -229,7 +235,7 @@ export default class List {
    */
   static get pasteConfig() {
     return {
-      tags: ['OL', 'UL', 'LI'],
+      tags: ["OL", "UL", "LI"],
     };
   }
 
@@ -240,8 +246,9 @@ export default class List {
    * @returns {HTMLOListElement|HTMLUListElement}
    */
   makeMainTag(style) {
-    const styleClass = style === 'ordered' ? this.CSS.wrapperOrdered : this.CSS.wrapperUnordered;
-    const tag = style === 'ordered' ? 'ol' : 'ul';
+    const styleClass =
+      type === "ordered" ? this.CSS.wrapperOrdered : this.CSS.wrapperUnordered;
+    const tag = type === "ordered" ? "ol" : "ul";
 
     return this._make(tag, [this.CSS.baseBlock, this.CSS.wrapper, styleClass], {
       contentEditable: !this.readOnly,
@@ -263,6 +270,7 @@ export default class List {
     this._elements.wrapper.replaceWith(newTag);
     this._elements.wrapper = newTag;
     this._data.style = style;
+    this.style = type;
   }
 
   /**
@@ -273,10 +281,10 @@ export default class List {
   get CSS() {
     return {
       baseBlock: this.api.styles.block,
-      wrapper: 'cdx-list',
-      wrapperOrdered: 'cdx-list--ordered',
-      wrapperUnordered: 'cdx-list--unordered',
-      item: 'cdx-list__item',
+      wrapper: "cdx-list",
+      wrapperOrdered: "cdx-list--ordered",
+      wrapperUnordered: "cdx-list--unordered",
+      item: "cdx-list__item",
     };
   }
 
@@ -290,7 +298,9 @@ export default class List {
       listData = {};
     }
 
-    this._data.style = listData.style || this.settings.find((tune) => tune.default === true).name;
+    this._data.style =
+      listData.style ||
+      this.settings.find((tune) => tune.default === true).name;
     this._data.items = listData.items || [];
 
     const oldView = this._elements.wrapper;
@@ -311,7 +321,7 @@ export default class List {
     const items = this._elements.wrapper.querySelectorAll(`.${this.CSS.item}`);
 
     for (let i = 0; i < items.length; i++) {
-      const value = items[i].innerHTML.replace('<br>', ' ').trim();
+      const value = items[i].innerHTML.replace("<br>", " ").trim();
 
       if (value) {
         this._data.items.push(items[i].innerHTML);
@@ -367,7 +377,7 @@ export default class List {
    * @param {KeyboardEvent} event
    */
   getOutofList(event) {
-    const items = this._elements.wrapper.querySelectorAll('.' + this.CSS.item);
+    const items = this._elements.wrapper.querySelectorAll("." + this.CSS.item);
 
     /**
      * Save the last one.
@@ -396,8 +406,8 @@ export default class List {
    * @param {KeyboardEvent} event
    */
   backspace(event) {
-    const items = this._elements.wrapper.querySelectorAll('.' + this.CSS.item),
-        firstItem = items[0];
+    const items = this._elements.wrapper.querySelectorAll("." + this.CSS.item),
+      firstItem = items[0];
 
     if (!firstItem) {
       return;
@@ -406,7 +416,7 @@ export default class List {
     /**
      * Save the last one.
      */
-    if (items.length < 2 && !firstItem.innerHTML.replace('<br>', ' ').trim()) {
+    if (items.length < 2 && !firstItem.innerHTML.replace("<br>", " ").trim()) {
       event.preventDefault();
     }
   }
@@ -420,9 +430,9 @@ export default class List {
     event.preventDefault();
 
     const selection = window.getSelection(),
-        currentNode = selection.anchorNode.parentNode,
-        currentItem = currentNode.closest('.' + this.CSS.item),
-        range = new Range();
+      currentNode = selection.anchorNode.parentNode,
+      currentItem = currentNode.closest("." + this.CSS.item),
+      range = new Range();
 
     range.selectNodeContents(currentItem);
 
@@ -438,15 +448,15 @@ export default class List {
    */
   pasteHandler(element) {
     const { tagName: tag } = element;
-    let style;
+    let type;
 
     switch (tag) {
-      case 'OL':
-        style = 'ordered';
+      case "OL":
+        type = "ordered";
         break;
-      case 'UL':
-      case 'LI':
-        style = 'unordered';
+      case "UL":
+      case "LI":
+        type = "unordered";
     }
 
     const data = {
@@ -454,10 +464,10 @@ export default class List {
       items: [],
     };
 
-    if (tag === 'LI') {
-      data.items = [ element.innerHTML ];
+    if (tag === "LI") {
+      data.items = [element.innerHTML];
     } else {
-      const items = Array.from(element.querySelectorAll('LI'));
+      const items = Array.from(element.querySelectorAll("LI"));
 
       data.items = items
         .map((li) => li.innerHTML)
@@ -467,4 +477,3 @@ export default class List {
     return data;
   }
 }
-

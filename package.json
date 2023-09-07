@@ -1,28 +1,21 @@
 {
-  "name": "@editor-js/list/sdb",
-  "version": "1.8.0",
-  "keywords": [
-    "codex editor",
-    "list",
-    "tool",
-    "editor.js",
-    "editorjs"
-  ],
+  "name": "@editorjs/sdb",
+  "version": "1.0.4",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
   "description": "List Tool for Editor.js FORKED - SDB",
   "license": "MIT",
   "repository": "https://github.com/sdbxsdb/EditorJsList",
-  "main": "./dist/bundle.js",
-  "scripts": {
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development --watch"
+  "main": "webpack.config.js",
+  "bugs": {
+    "url": "https://github.com/sdbxsdb/EditorJsList/issues"
   },
-  "author": {
-    "name": "CodeX",
-    "email": "team@codex.so"
-  },
+  "homepage": "https://github.com/sdbxsdb/EditorJsList#readme",
   "publishConfig": {
-  "registry": "https://registry.npmjs.org/"
-},
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
