@@ -78,16 +78,16 @@ export default class List {
 
     this.settings = [
       {
-        name: "ordered",
-        label: this.api.i18n.t("Ordered"),
-        icon: IconListNumbered,
-        default: config.defaultStyle || false,
-      },
-      {
         name: "unordered",
         label: this.api.i18n.t("Unordered"),
         icon: IconListBulleted,
-        default: config.defaultStyle || true,
+        default: config.defaultStyle === "unordered" || false,
+      },
+      {
+        name: "ordered",
+        label: this.api.i18n.t("Ordered"),
+        icon: IconListNumbered,
+        default: config.defaultStyle === "ordered" || true,
       },
     ];
 
@@ -182,7 +182,7 @@ export default class List {
       import: (string) => {
         return {
           items: [string],
-          style: "",
+          style: "ordered",
         };
       },
     };
@@ -247,8 +247,8 @@ export default class List {
    */
   makeMainTag(style) {
     const styleClass =
-      type === "ordered" ? this.CSS.wrapperOrdered : this.CSS.wrapperUnordered;
-    const tag = type === "ordered" ? "ol" : "ul";
+      style === "ordered" ? this.CSS.wrapperOrdered : this.CSS.wrapperUnordered;
+    const tag = style === "ordered" ? "ol" : "ul";
 
     return this._make(tag, [this.CSS.baseBlock, this.CSS.wrapper, styleClass], {
       contentEditable: !this.readOnly,
@@ -270,7 +270,6 @@ export default class List {
     this._elements.wrapper.replaceWith(newTag);
     this._elements.wrapper = newTag;
     this._data.style = style;
-    this.style = type;
   }
 
   /**
@@ -448,15 +447,15 @@ export default class List {
    */
   pasteHandler(element) {
     const { tagName: tag } = element;
-    let type;
+    let style;
 
     switch (tag) {
       case "OL":
-        type = "ordered";
+        style = "ordered";
         break;
       case "UL":
       case "LI":
-        type = "unordered";
+        style = "unordered";
     }
 
     const data = {
