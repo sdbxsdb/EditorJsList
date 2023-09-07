@@ -176,7 +176,7 @@ export default class List {
       import: (string) => {
         return {
           items: [ string ],
-          style: 'unordered',
+          style: '',
         };
       },
     };
