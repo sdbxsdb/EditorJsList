@@ -1,5 +1,5 @@
 {
-  "name": "@editorjs/list",
+  "name": "@editor-js/list/sdb",
   "version": "1.8.0",
   "keywords": [
     "codex editor",
@@ -8,9 +8,9 @@
     "editor.js",
     "editorjs"
   ],
-  "description": "List Tool for Editor.js",
+  "description": "List Tool for Editor.js FORKED - SDB",
   "license": "MIT",
-  "repository": "https://github.com/editor-js/list",
+  "repository": "https://github.com/sdbxsdb/EditorJsList",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --mode production",
